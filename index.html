@@ -1,0 +1,415 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Danh Sách Mua Sắm</title>
+    <style>
+        :root {
+            --primary: #3498db;
+            --secondary: #2ecc71;
+            --danger: #e74c3c;
+            --light: #ecf0f1;
+            --dark: #34495e;
+            --gray: #bdc3c7;
+        }
+        
+        * {
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            -webkit-tap-highlight-color: transparent;
+        }
+        
+        body {
+            background-color: #f5f7fa;
+            margin: 0;
+            padding: 10px;
+            color: var(--dark);
+            font-size: 14px;
+        }
+        
+        .container {
+            max-width: 100%;
+            margin: 0 auto;
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            padding: 15px;
+            overflow: hidden;
+        }
+        
+        h1 {
+            color: var(--primary);
+            text-align: center;
+            margin: 10px 0 20px;
+            font-size: 1.5rem;
+        }
+        
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+        
+        .form-row {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+        
+        .form-row > * {
+            flex: 1 1 calc(50% - 10px);
+            min-width: 0;
+        }
+        
+        .form-control {
+            width: 100%;
+            padding: 12px 10px;
+            border: 1px solid var(--gray);
+            border-radius: 5px;
+            font-size: 16px;
+            transition: border-color 0.3s;
+        }
+        
+        .form-control:focus {
+            outline: none;
+            border-color: var(--primary);
+        }
+        
+        .btn {
+            padding: 12px 15px;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            width: 100%;
+            font-weight: 500;
+        }
+        
+        .btn:active {
+            transform: scale(0.98);
+        }
+        
+        .btn-primary {
+            background-color: var(--primary);
+            color: white;
+        }
+        
+        .btn-danger {
+            background-color: var(--danger);
+            color: white;
+        }
+        
+        .btn-secondary {
+            background-color: var(--secondary);
+            color: white;
+        }
+        
+        .table-responsive {
+            width: 100%;
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+            margin-bottom: 15px;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            min-width: 500px;
+        }
+        
+        th, td {
+            padding: 10px 8px;
+            text-align: left;
+            border-bottom: 1px solid var(--gray);
+        }
+        
+        th {
+            background-color: var(--light);
+            font-weight: 600;
+            position: sticky;
+            top: 0;
+        }
+        
+        tr:last-child td {
+            border-bottom: none;
+        }
+        
+        .action-btns {
+            display: flex;
+            gap: 5px;
+        }
+        
+        .action-btn {
+            padding: 6px 10px;
+            font-size: 14px;
+            border-radius: 4px;
+            white-space: nowrap;
+        }
+        
+        .total-section {
+            text-align: right;
+            font-size: 16px;
+            font-weight: bold;
+            padding: 12px;
+            background-color: var(--light);
+            border-radius: 5px;
+            margin-top: 15px;
+        }
+        
+        .total-amount {
+            color: var(--primary);
+            font-size: 20px;
+        }
+        
+        .empty-message {
+            text-align: center;
+            padding: 20px;
+            color: var(--gray);
+            font-style: italic;
+        }
+        
+        @media (min-width: 480px) {
+            .form-row > * {
+                flex: 1 1 calc(33.333% - 10px);
+            }
+            
+            .action-btn {
+                padding: 8px 12px;
+            }
+        }
+        
+        @media (min-width: 768px) {
+            body {
+                padding: 20px;
+                font-size: 16px;
+            }
+            
+            .container {
+                padding: 20px;
+            }
+            
+            .form-group {
+                flex-direction: row;
+                flex-wrap: wrap;
+            }
+            
+            .form-row {
+                flex: 1;
+            }
+            
+            .form-row > * {
+                flex: 1 1 auto;
+            }
+            
+            #addBtn {
+                max-width: 150px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🛒 Danh Sách Mua Sắm</h1>
+        
+        <div class="form-group">
+            <input type="text" id="itemName" class="form-control" placeholder="Tên món hàng">
+            <div class="form-row">
+                <input type="number" id="itemQuantity" class="form-control" placeholder="Số lượng" min="1" value="1">
+                <select id="itemUnit" class="form-control">
+                    <option value="cái">cái</option>
+                    <option value="kg">kg</option>
+                    <option value="g">g</option>
+                    <option value="ml">ml</option>
+                    <option value="lít">lít</option>
+                    <option value="gói">gói</option>
+                    <option value="hộp">hộp</option>
+                    <option value="chai">chai</option>
+                </select>
+                <input type="number" id="itemPrice" class="form-control" placeholder="Giá (đ)" min="0">
+            </div>
+            <button id="addBtn" class="btn btn-primary">Thêm Món</button>
+        </div>
+        
+        <div class="table-responsive">
+            <table id="shoppingTable">
+                <thead>
+                    <tr>
+                        <th>STT</th>
+                        <th>Tên Món</th>
+                        <th>SL</th>
+                        <th>ĐV</th>
+                        <th>Giá (đ)</th>
+                        <th>Thao Tác</th>
+                    </tr>
+                </thead>
+                <tbody id="shoppingList">
+                    <!-- Danh sách sẽ được thêm vào đây -->
+                </tbody>
+            </table>
+        </div>
+        
+        <div class="empty-message" id="emptyMessage">Danh sách mua sắm trống. Hãy thêm món hàng!</div>
+        
+        <div class="total-section">
+            Tổng cộng: <span class="total-amount" id="totalAmount">0</span> đ
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const shoppingList = document.getElementById('shoppingList');
+            const emptyMessage = document.getElementById('emptyMessage');
+            const totalAmount = document.getElementById('totalAmount');
+            const addBtn = document.getElementById('addBtn');
+            
+            let items = [];
+            let editIndex = null;
+            
+            // Tải danh sách từ localStorage
+            if (localStorage.getItem('shoppingList')) {
+                items = JSON.parse(localStorage.getItem('shoppingList'));
+                renderItems();
+                updateTotal();
+            }
+            
+            // Thêm hoặc cập nhật món hàng
+            addBtn.addEventListener('click', function() {
+                const name = document.getElementById('itemName').value.trim();
+                const quantity = parseInt(document.getElementById('itemQuantity').value);
+                const unit = document.getElementById('itemUnit').value;
+                const price = parseInt(document.getElementById('itemPrice').value);
+                
+                if (!name || isNaN(quantity) || isNaN(price)) {
+                    alert('Vui lòng điền đầy đủ thông tin với giá trị hợp lệ');
+                    return;
+                }
+                
+                const item = {
+                    name,
+                    quantity,
+                    unit,
+                    price
+                };
+                
+                if (editIndex !== null) {
+                    // Cập nhật món hàng
+                    items[editIndex] = item;
+                    editIndex = null;
+                    addBtn.textContent = 'Thêm Món';
+                } else {
+                    // Thêm món hàng mới
+                    items.push(item);
+                }
+                
+                saveItems();
+                renderItems();
+                updateTotal();
+                clearForm();
+            });
+            
+            // Hiển thị danh sách
+            function renderItems() {
+                shoppingList.innerHTML = '';
+                
+                if (items.length === 0) {
+                    emptyMessage.style.display = 'block';
+                    return;
+                }
+                
+                emptyMessage.style.display = 'none';
+                
+                items.forEach((item, index) => {
+                    const row = document.createElement('tr');
+                    
+                    row.innerHTML = `
+                        <td>${index + 1}</td>
+                        <td>${item.name}</td>
+                        <td>${item.quantity}</td>
+                        <td>${item.unit}</td>
+                        <td>${formatCurrency(item.price)}</td>
+                        <td class="action-btns">
+                            <button class="btn btn-secondary action-btn edit-btn" data-index="${index}">Sửa</button>
+                            <button class="btn btn-danger action-btn delete-btn" data-index="${index}">Xóa</button>
+                        </td>
+                    `;
+                    
+                    shoppingList.appendChild(row);
+                });
+                
+                // Thêm sự kiện cho nút Sửa và Xóa
+                document.querySelectorAll('.edit-btn').forEach(btn => {
+                    btn.addEventListener('click', function() {
+                        const index = parseInt(this.getAttribute('data-index'));
+                        editItem(index);
+                    });
+                });
+                
+                document.querySelectorAll('.delete-btn').forEach(btn => {
+                    btn.addEventListener('click', function() {
+                        const index = parseInt(this.getAttribute('data-index'));
+                        deleteItem(index);
+                    });
+                });
+            }
+            
+            // Định dạng tiền tệ
+            function formatCurrency(amount) {
+                return amount.toLocaleString('vi-VN');
+            }
+            
+            // Sửa món hàng
+            function editItem(index) {
+                const item = items[index];
+                document.getElementById('itemName').value = item.name;
+                document.getElementById('itemQuantity').value = item.quantity;
+                document.getElementById('itemUnit').value = item.unit;
+                document.getElementById('itemPrice').value = item.price;
+                
+                editIndex = index;
+                addBtn.textContent = 'Cập Nhật';
+                document.getElementById('itemName').focus();
+            }
+            
+            // Xóa món hàng
+            function deleteItem(index) {
+                if (confirm('Bạn có chắc muốn xóa món hàng này?')) {
+                    items.splice(index, 1);
+                    saveItems();
+                    renderItems();
+                    updateTotal();
+                    
+                    if (editIndex === index) {
+                        editIndex = null;
+                        addBtn.textContent = 'Thêm Món';
+                        clearForm();
+                    } else if (editIndex > index) {
+                        editIndex--;
+                    }
+                }
+            }
+            
+            // Cập nhật tổng tiền
+            function updateTotal() {
+                const total = items.reduce((sum, item) => sum + item.price, 0);
+                totalAmount.textContent = formatCurrency(total);
+            }
+            
+            // Xóa form nhập liệu
+            function clearForm() {
+                document.getElementById('itemName').value = '';
+                document.getElementById('itemQuantity').value = '1';
+                document.getElementById('itemPrice').value = '';
+                document.getElementById('itemName').focus();
+            }
+            
+            // Lưu danh sách vào localStorage
+            function saveItems() {
+                localStorage.setItem('shoppingList', JSON.stringify(items));
+            }
+        });
+    </script>
+</body>
+</html>
