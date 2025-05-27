@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Danh Sách Mua Sắm</title>
+    <title>Shopping</title>
     <style>
         :root {
             --primary: #3498db;
@@ -212,7 +212,7 @@
 </head>
 <body>
     <div class="container">
-        <h1>🛒 Danh Sách Mua Sắm</h1>
+        <h1>🛒 DANH SÁCH MUA SẮM</h1>
         
         <div class="form-group">
             <input type="text" id="itemName" class="form-control" placeholder="Tên món hàng">
@@ -230,15 +230,15 @@
                 </select>
                 <input type="number" id="itemPrice" class="form-control" placeholder="Giá (đ)" min="0">
             </div>
-            <button id="addBtn" class="btn btn-primary">Thêm Món</button>
+            <button id="addBtn" class="btn btn-primary">Thêm</button>
         </div>
         
         <div class="table-responsive">
             <table id="shoppingTable">
                 <thead>
                     <tr>
-                        <th>STT</th>
-                        <th>Tên Món</th>
+                        <th>Stt</th>
+                        <th>Tên hàng</th>
                         <th>SL</th>
                         <th>ĐV</th>
                         <th>Giá (đ)</th>
@@ -283,7 +283,7 @@
                 const price = parseInt(document.getElementById('itemPrice').value);
                 
                 if (!name || isNaN(quantity) || isNaN(price)) {
-                    alert('Vui lòng điền đầy đủ thông tin với giá trị hợp lệ');
+                    alert('Vui lòng điền đầy đủ thông tin');
                     return;
                 }
                 
@@ -298,7 +298,7 @@
                     // Cập nhật món hàng
                     items[editIndex] = item;
                     editIndex = null;
-                    addBtn.textContent = 'Thêm Món';
+                    addBtn.textContent = 'Thêm';
                 } else {
                     // Thêm món hàng mới
                     items.push(item);
