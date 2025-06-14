@@ -3,52 +3,146 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Shopping</title>
+    <title>Danh sách mua sắm</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         :root {
             --primary: #3498db;
+            --primary-dark: #2980b9;
             --secondary: #2ecc71;
+            --secondary-dark: #27ae60;
             --danger: #e74c3c;
+            --danger-dark: #c0392b;
             --light: #ecf0f1;
             --dark: #34495e;
+            --darker: #2c3e50;
             --gray: #bdc3c7;
+            --light-gray: #f8f9fa;
+            --dark-gray: #7f8c8d;
+            --shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            --transition: all 0.3s ease;
+            --border-radius: 10px;
+        }
+
+        .dark-mode {
+            --primary: #3498db;
+            --primary-dark: #2980b9;
+            --secondary: #2ecc71;
+            --secondary-dark: #27ae60;
+            --danger: #e74c3c;
+            --danger-dark: #c0392b;
+            --light: #2c3e50;
+            --dark: #ecf0f1;
+            --darker: #f8f9fa;
+            --gray: #7f8c8d;
+            --light-gray: #34495e;
+            --dark-gray: #bdc3c7;
+            --shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
         }
         
         * {
             box-sizing: border-box;
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             -webkit-tap-highlight-color: transparent;
+            margin: 0;
+            padding: 0;
         }
         
         body {
-            background-color: #f5f7fa;
+            background: linear-gradient(135deg, #f5f7fa 0%, #e4edf5 100%);
             margin: 0;
-            padding: 10px;
+            padding: 20px;
             color: var(--dark);
-            font-size: 14px;
+            font-size: 15px;
+            min-height: 100vh;
+            transition: var(--transition);
+        }
+
+        body.dark-mode {
+            background: linear-gradient(135deg, #2c3e50 0%, #1a2530 100%);
         }
         
         .container {
-            max-width: 100%;
+            max-width: 1000px;
             margin: 0 auto;
             background-color: white;
-            border-radius: 8px;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-            padding: 15px;
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow);
+            padding: 25px;
             overflow: hidden;
+            transition: var(--transition);
+        }
+
+        .dark-mode .container {
+            background-color: var(--light);
+        }
+        
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+            flex-wrap: wrap;
+            gap: 15px;
         }
         
         h1 {
             color: var(--primary);
-            text-align: center;
-            margin: 10px 0 20px;
-            font-size: 1.5rem;
+            font-size: 1.8rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .controls {
+            display: flex;
+            gap: 10px;
+        }
+        
+        .theme-toggle {
+            background: var(--light-gray);
+            border: none;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            color: var(--dark);
+            font-size: 18px;
+            transition: var(--transition);
+            box-shadow: var(--shadow);
+        }
+
+        .dark-mode .theme-toggle {
+            background: var(--darker);
+            color: var(--dark);
+        }
+        
+        .theme-toggle:hover {
+            transform: rotate(20deg);
+            background: var(--primary);
+            color: white;
+        }
+        
+        .form-container {
+            background: var(--light-gray);
+            border-radius: var(--border-radius);
+            padding: 20px;
+            margin-bottom: 25px;
+            box-shadow: var(--shadow);
+            transition: var(--transition);
+        }
+
+        .dark-mode .form-container {
+            background: var(--darker);
         }
         
         .form-group {
             display: flex;
             flex-direction: column;
-            gap: 10px;
+            gap: 15px;
             margin-bottom: 15px;
         }
         
@@ -65,27 +159,40 @@
         
         .form-control {
             width: 100%;
-            padding: 12px 10px;
+            padding: 14px 12px;
             border: 1px solid var(--gray);
-            border-radius: 5px;
+            border-radius: 8px;
             font-size: 16px;
-            transition: border-color 0.3s;
+            transition: var(--transition);
+            background: white;
+            color: var(--darker);
+        }
+
+        .dark-mode .form-control {
+            background: var(--light);
+            border-color: var(--gray);
+            color: var(--dark);
         }
         
         .form-control:focus {
             outline: none;
             border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.2);
         }
         
         .btn {
-            padding: 12px 15px;
+            padding: 14px 15px;
             border: none;
-            border-radius: 5px;
+            border-radius: 8px;
             font-size: 16px;
             cursor: pointer;
-            transition: background-color 0.3s;
+            transition: var(--transition);
             width: 100%;
-            font-weight: 500;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
         }
         
         .btn:active {
@@ -93,18 +200,60 @@
         }
         
         .btn-primary {
-            background-color: var(--primary);
+            background: linear-gradient(to right, var(--primary), var(--primary-dark));
             color: white;
+        }
+        
+        .btn-primary:hover {
+            background: linear-gradient(to right, var(--primary-dark), var(--primary));
+            box-shadow: 0 4px 10px rgba(52, 152, 219, 0.3);
         }
         
         .btn-danger {
-            background-color: var(--danger);
+            background: linear-gradient(to right, var(--danger), var(--danger-dark));
             color: white;
         }
         
+        .btn-danger:hover {
+            background: linear-gradient(to right, var(--danger-dark), var(--danger));
+            box-shadow: 0 4px 10px rgba(231, 76, 60, 0.3);
+        }
+        
         .btn-secondary {
-            background-color: var(--secondary);
+            background: linear-gradient(to right, var(--secondary), var(--secondary-dark));
             color: white;
+        }
+        
+        .btn-secondary:hover {
+            background: linear-gradient(to right, var(--secondary-dark), var(--secondary));
+            box-shadow: 0 4px 10px rgba(46, 204, 113, 0.3);
+        }
+
+        .btn-light {
+            background: var(--light-gray);
+            color: var(--dark);
+        }
+
+        .dark-mode .btn-light {
+            background: var(--darker);
+            color: var(--dark);
+        }
+        
+        .btn-light:hover {
+            background: var(--gray);
+            color: var(--darker);
+        }
+        
+        .filter-section {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+        
+        .filter-group {
+            flex: 1;
+            min-width: 200px;
         }
         
         .table-responsive {
@@ -112,138 +261,298 @@
             overflow-x: auto;
             -webkit-overflow-scrolling: touch;
             margin-bottom: 15px;
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow);
         }
         
         table {
             width: 100%;
             border-collapse: collapse;
-            min-width: 500px;
+            min-width: 600px;
+            background: white;
+            transition: var(--transition);
+        }
+
+        .dark-mode table {
+            background: var(--light);
         }
         
         th, td {
-            padding: 10px 8px;
+            padding: 14px 12px;
             text-align: left;
             border-bottom: 1px solid var(--gray);
+            transition: var(--transition);
         }
         
         th {
-            background-color: var(--light);
+            background: linear-gradient(to bottom, var(--light-gray), #e0e6eb);
             font-weight: 600;
             position: sticky;
             top: 0;
+            cursor: pointer;
+            transition: var(--transition);
+            color: var(--darker);
+        }
+
+        .dark-mode th {
+            background: linear-gradient(to bottom, var(--darker), #1a2530);
+            color: var(--dark);
+        }
+        
+        th:hover {
+            background: linear-gradient(to bottom, #d5dde4, #d0d9e1);
+        }
+
+        .dark-mode th:hover {
+            background: linear-gradient(to bottom, #253544, #1e2a38);
+        }
+        
+        th i {
+            margin-left: 5px;
+            font-size: 12px;
+            opacity: 0.7;
         }
         
         tr:last-child td {
             border-bottom: none;
         }
+
+        tr.item-row {
+            transition: var(--transition);
+        }
+
+        tr.item-row:hover {
+            background-color: rgba(52, 152, 219, 0.05);
+        }
+
+        .dark-mode tr.item-row:hover {
+            background-color: rgba(52, 152, 219, 0.1);
+        }
         
         .action-btns {
             display: flex;
-            gap: 5px;
+            gap: 8px;
         }
         
         .action-btn {
-            padding: 6px 10px;
+            padding: 8px 12px;
             font-size: 14px;
-            border-radius: 4px;
+            border-radius: 6px;
             white-space: nowrap;
+            display: flex;
+            align-items: center;
+            gap: 5px;
         }
         
         .total-section {
-            text-align: right;
-            font-size: 16px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 17px;
             font-weight: bold;
-            padding: 12px;
-            background-color: var(--light);
-            border-radius: 5px;
-            margin-top: 15px;
+            padding: 16px;
+            background: linear-gradient(to right, var(--light-gray), #e6ebf0);
+            border-radius: var(--border-radius);
+            margin-top: 20px;
+            box-shadow: var(--shadow);
+            transition: var(--transition);
+        }
+
+        .dark-mode .total-section {
+            background: linear-gradient(to right, var(--darker), #253544);
         }
         
         .total-amount {
             color: var(--primary);
-            font-size: 20px;
+            font-size: 24px;
+            font-weight: 700;
+            transition: var(--transition);
         }
         
         .empty-message {
             text-align: center;
-            padding: 20px;
+            padding: 40px 20px;
             color: var(--gray);
             font-style: italic;
+            background: var(--light-gray);
+            border-radius: var(--border-radius);
+            margin: 20px 0;
+            transition: var(--transition);
+        }
+
+        .dark-mode .empty-message {
+            background: var(--darker);
         }
         
-        @media (min-width: 480px) {
+        .item-purchased {
+            text-decoration: line-through;
+            opacity: 0.7;
+        }
+        
+        .purchase-status {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            cursor: pointer;
+        }
+        
+        .purchase-status i {
+            font-size: 18px;
+            color: var(--secondary);
+        }
+        
+        .item-purchased .purchase-status i {
+            color: var(--danger);
+        }
+        
+        .sort-indicator {
+            display: inline-block;
+            width: 16px;
+            text-align: center;
+        }
+        
+        .footer {
+            text-align: center;
+            margin-top: 25px;
+            color: var(--dark-gray);
+            font-size: 14px;
+            padding: 10px;
+        }
+
+        .dark-mode .footer {
+            color: var(--gray);
+        }
+        
+        @media (max-width: 768px) {
             .form-row > * {
-                flex: 1 1 calc(33.333% - 10px);
+                flex: 1 1 100%;
+            }
+            
+            .action-btns {
+                flex-direction: column;
             }
             
             .action-btn {
-                padding: 8px 12px;
+                width: 100%;
+            }
+            
+            .filter-group {
+                min-width: 100%;
+            }
+            
+            .total-section {
+                flex-direction: column;
+                gap: 15px;
+                align-items: flex-end;
+            }
+            
+            header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            
+            .controls {
+                align-self: flex-end;
             }
         }
         
-        @media (min-width: 768px) {
+        @media (max-width: 480px) {
             body {
-                padding: 20px;
-                font-size: 16px;
+                padding: 10px;
             }
             
             .container {
-                padding: 20px;
+                padding: 15px;
             }
             
-            .form-group {
-                flex-direction: row;
-                flex-wrap: wrap;
+            .form-container {
+                padding: 15px;
             }
             
-            .form-row {
-                flex: 1;
+            th, td {
+                padding: 10px 8px;
             }
             
-            .form-row > * {
-                flex: 1 1 auto;
+            .btn {
+                padding: 12px;
             }
-            
-            #addBtn {
-                max-width: 150px;
-            }
+        }
+
+        /* Animation for adding items */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .new-item {
+            animation: fadeIn 0.5s ease-out;
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <h1>🛒 DANH SÁCH MUA SẮM</h1>
-        
-        <div class="form-group">
-            <input type="text" id="itemName" class="form-control" placeholder="Tên món hàng">
-            <div class="form-row">
-                <input type="number" id="itemQuantity" class="form-control" placeholder="Số lượng" min="1">
-                <select id="itemUnit" class="form-control">
-                    <option value="cái">cái</option>
-                    <option value="kg">kg</option>
-                    <option value="g">g</option>
-                    <option value="ml">ml</option>
-                    <option value="lít">lít</option>
-                    <option value="chai">bịch</option>
-                    <option value="gói">gói</option>
-                    <option value="hộp">hộp</option>
-                    <option value="chai">chai</option>
-                    <option value="chai">lọ</option>
-                </select>
-                <input type="number" id="itemPrice" class="form-control" placeholder="Giá (đ)" min="0">
+        <header>
+            <h1><i class="fas fa-shopping-cart"></i> DANH SÁCH MUA SẮM</h1>
+            <div class="controls">
+                <button class="theme-toggle" id="themeToggle">
+                    <i class="fas fa-moon"></i>
+                </button>
             </div>
-            <button id="addBtn" class="btn btn-primary">Thêm</button>
+        </header>
+        
+        <div class="form-container">
+            <div class="form-group">
+                <input type="text" id="itemName" class="form-control" placeholder="Tên món hàng">
+                <div class="form-row">
+                    <input type="number" id="itemQuantity" class="form-control" placeholder="Số lượng" min="1" value="1">
+                    <select id="itemUnit" class="form-control">
+                        <option value="cái">cái</option>
+                        <option value="kg">kg</option>
+                        <option value="g">g</option>
+                        <option value="ml">ml</option>
+                        <option value="lít">lít</option>
+                        <option value="bịch">bịch</option>
+                        <option value="gói">gói</option>
+                        <option value="hộp">hộp</option>
+                        <option value="chai">chai</option>
+                        <option value="lọ">lọ</option>
+                    </select>
+                    <input type="number" id="itemPrice" class="form-control" placeholder="Giá (đ)" min="0">
+                </div>
+                <button id="addBtn" class="btn btn-primary">
+                    <i class="fas fa-plus"></i> Thêm món hàng
+                </button>
+            </div>
+        </div>
+        
+        <div class="filter-section">
+            <div class="filter-group">
+                <input type="text" id="searchInput" class="form-control" placeholder="Tìm kiếm món hàng...">
+            </div>
+            <div class="filter-group">
+                <select id="filterStatus" class="form-control">
+                    <option value="all">Tất cả món hàng</option>
+                    <option value="active">Chưa mua</option>
+                    <option value="purchased">Đã mua</option>
+                </select>
+            </div>
+            <div class="filter-group">
+                <button id="clearAllBtn" class="btn btn-light">
+                    <i class="fas fa-trash-alt"></i> Xóa tất cả
+                </button>
+            </div>
         </div>
         
         <div class="table-responsive">
             <table id="shoppingTable">
                 <thead>
                     <tr>
-                        <th>Stt</th>
-                        <th>Tên hàng</th>
-                        <th>SL</th>
-                        <th>ĐV</th>
-                        <th>Giá (đ)</th>
+                        <th data-sort="status">Trạng thái</th>
+                        <th data-sort="name">Tên hàng <i class="sort-indicator"></i></th>
+                        <th data-sort="quantity">SL <i class="sort-indicator"></i></th>
+                        <th data-sort="unit">ĐV <i class="sort-indicator"></i></th>
+                        <th data-sort="price">Giá (đ) <i class="sort-indicator"></i></th>
+                        <th data-sort="total">Thành tiền <i class="sort-indicator"></i></th>
                         <th>Thao Tác</th>
                     </tr>
                 </thead>
@@ -253,10 +562,23 @@
             </table>
         </div>
         
-        <div class="empty-message" id="emptyMessage">Danh sách mua sắm trống. Hãy thêm món hàng!</div>
+        <div class="empty-message" id="emptyMessage">
+            <i class="fas fa-shopping-basket" style="font-size: 48px; margin-bottom: 15px;"></i>
+            <h3>Danh sách mua sắm trống</h3>
+            <p>Hãy thêm món hàng đầu tiên của bạn!</p>
+        </div>
         
         <div class="total-section">
-            Tổng cộng: <span class="total-amount" id="totalAmount">0</span> đ
+            <div>
+                <span id="itemCount">0</span> món hàng
+            </div>
+            <div>
+                Tổng cộng: <span class="total-amount" id="totalAmount">0</span> đ
+            </div>
+        </div>
+        
+        <div class="footer">
+            Ứng dụng Danh sách Mua sắm &copy; 2023 - Quản lý chi tiêu thông minh
         </div>
     </div>
 
@@ -265,10 +587,18 @@
             const shoppingList = document.getElementById('shoppingList');
             const emptyMessage = document.getElementById('emptyMessage');
             const totalAmount = document.getElementById('totalAmount');
+            const itemCount = document.getElementById('itemCount');
             const addBtn = document.getElementById('addBtn');
+            const clearAllBtn = document.getElementById('clearAllBtn');
+            const searchInput = document.getElementById('searchInput');
+            const filterStatus = document.getElementById('filterStatus');
+            const themeToggle = document.getElementById('themeToggle');
+            const tableHeaders = document.querySelectorAll('th[data-sort]');
             
             let items = [];
             let editIndex = null;
+            let sortColumn = 'name';
+            let sortDirection = 'asc';
             
             // Tải danh sách từ localStorage
             if (localStorage.getItem('shoppingList')) {
@@ -280,27 +610,33 @@
             // Thêm hoặc cập nhật món hàng
             addBtn.addEventListener('click', function() {
                 const name = document.getElementById('itemName').value.trim();
-                const quantity = parseInt(document.getElementById('itemQuantity').value);
+                const quantity = parseInt(document.getElementById('itemQuantity').value) || 1;
                 const unit = document.getElementById('itemUnit').value;
-                const price = parseInt(document.getElementById('itemPrice').value);
+                const price = parseInt(document.getElementById('itemPrice').value) || 0;
+                const purchased = false;
                 
-                if (!name || isNaN(quantity) || isNaN(price)) {
-                    alert('Vui lòng điền đầy đủ thông tin');
+                if (!name) {
+                    alert('Vui lòng nhập tên món hàng');
+                    document.getElementById('itemName').focus();
                     return;
                 }
                 
+                const total = quantity * price;
                 const item = {
                     name,
                     quantity,
                     unit,
-                    price
+                    price,
+                    total,
+                    purchased,
+                    timestamp: new Date().getTime()
                 };
                 
                 if (editIndex !== null) {
                     // Cập nhật món hàng
                     items[editIndex] = item;
                     editIndex = null;
-                    addBtn.textContent = 'Thêm';
+                    addBtn.innerHTML = '<i class="fas fa-plus"></i> Thêm món hàng';
                 } else {
                     // Thêm món hàng mới
                     items.push(item);
@@ -312,29 +648,140 @@
                 clearForm();
             });
             
+            // Xóa tất cả món hàng
+            clearAllBtn.addEventListener('click', function() {
+                if (items.length === 0) return;
+                
+                if (confirm('Bạn có chắc muốn xóa TẤT CẢ món hàng?')) {
+                    items = [];
+                    saveItems();
+                    renderItems();
+                    updateTotal();
+                    editIndex = null;
+                    addBtn.innerHTML = '<i class="fas fa-plus"></i> Thêm món hàng';
+                }
+            });
+            
+            // Tìm kiếm món hàng
+            searchInput.addEventListener('input', function() {
+                renderItems();
+            });
+            
+            // Lọc theo trạng thái
+            filterStatus.addEventListener('change', function() {
+                renderItems();
+            });
+            
+            // Chuyển đổi chế độ tối/sáng
+            themeToggle.addEventListener('click', function() {
+                document.body.classList.toggle('dark-mode');
+                const icon = themeToggle.querySelector('i');
+                
+                if (document.body.classList.contains('dark-mode')) {
+                    icon.classList.remove('fa-moon');
+                    icon.classList.add('fa-sun');
+                    localStorage.setItem('theme', 'dark');
+                } else {
+                    icon.classList.remove('fa-sun');
+                    icon.classList.add('fa-moon');
+                    localStorage.setItem('theme', 'light');
+                }
+            });
+            
+            // Sắp xếp khi click vào tiêu đề cột
+            tableHeaders.forEach(header => {
+                header.addEventListener('click', function() {
+                    const column = this.getAttribute('data-sort');
+                    
+                    if (sortColumn === column) {
+                        sortDirection = sortDirection === 'asc' ? 'desc' : 'asc';
+                    } else {
+                        sortColumn = column;
+                        sortDirection = 'asc';
+                    }
+                    
+                    renderItems();
+                    updateSortIndicators();
+                });
+            });
+            
             // Hiển thị danh sách
             function renderItems() {
                 shoppingList.innerHTML = '';
                 
-                if (items.length === 0) {
+                // Lọc và sắp xếp
+                const searchTerm = searchInput.value.toLowerCase();
+                const statusFilter = filterStatus.value;
+                
+                let filteredItems = items.filter(item => {
+                    const matchesSearch = item.name.toLowerCase().includes(searchTerm);
+                    const matchesStatus = statusFilter === 'all' || 
+                                        (statusFilter === 'active' && !item.purchased) || 
+                                        (statusFilter === 'purchased' && item.purchased);
+                    return matchesSearch && matchesStatus;
+                });
+                
+                // Sắp xếp
+                filteredItems.sort((a, b) => {
+                    let valA, valB;
+                    
+                    if (sortColumn === 'name') {
+                        valA = a.name.toLowerCase();
+                        valB = b.name.toLowerCase();
+                    } else if (sortColumn === 'quantity') {
+                        valA = a.quantity;
+                        valB = b.quantity;
+                    } else if (sortColumn === 'price') {
+                        valA = a.price;
+                        valB = b.price;
+                    } else if (sortColumn === 'total') {
+                        valA = a.total;
+                        valB = b.total;
+                    } else if (sortColumn === 'unit') {
+                        valA = a.unit;
+                        valB = b.unit;
+                    } else { // status
+                        valA = a.purchased ? 1 : 0;
+                        valB = b.purchased ? 1 : 0;
+                    }
+                    
+                    if (typeof valA === 'string') {
+                        return sortDirection === 'asc' ? valA.localeCompare(valB) : valB.localeCompare(valA);
+                    } else {
+                        return sortDirection === 'asc' ? valA - valB : valB - valA;
+                    }
+                });
+                
+                if (filteredItems.length === 0) {
                     emptyMessage.style.display = 'block';
                     return;
                 }
                 
                 emptyMessage.style.display = 'none';
                 
-                items.forEach((item, index) => {
+                filteredItems.forEach((item, index) => {
                     const row = document.createElement('tr');
+                    row.className = 'item-row' + (item.purchased ? ' item-purchased' : '');
+                    
+                    // Tính toán thành tiền
+                    const itemTotal = item.quantity * item.price;
                     
                     row.innerHTML = `
-                        <td>${index + 1}</td>
+                        <td class="purchase-status" data-index="${index}">
+                            <i class="fas ${item.purchased ? 'fa-check-circle' : 'fa-circle'}"></i>
+                        </td>
                         <td>${item.name}</td>
                         <td>${item.quantity}</td>
                         <td>${item.unit}</td>
                         <td>${formatCurrency(item.price)}</td>
+                        <td><strong>${formatCurrency(itemTotal)}</strong></td>
                         <td class="action-btns">
-                            <button class="btn btn-secondary action-btn edit-btn" data-index="${index}">Sửa</button>
-                            <button class="btn btn-danger action-btn delete-btn" data-index="${index}">Xóa</button>
+                            <button class="btn btn-secondary action-btn edit-btn" data-index="${index}">
+                                <i class="fas fa-edit"></i> Sửa
+                            </button>
+                            <button class="btn btn-danger action-btn delete-btn" data-index="${index}">
+                                <i class="fas fa-trash"></i> Xóa
+                            </button>
                         </td>
                     `;
                     
@@ -355,6 +802,26 @@
                         deleteItem(index);
                     });
                 });
+                
+                // Thêm sự kiện cho trạng thái mua hàng
+                document.querySelectorAll('.purchase-status').forEach(status => {
+                    status.addEventListener('click', function() {
+                        const index = parseInt(this.getAttribute('data-index'));
+                        togglePurchaseStatus(index);
+                    });
+                });
+            }
+            
+            // Cập nhật chỉ báo sắp xếp
+            function updateSortIndicators() {
+                document.querySelectorAll('.sort-indicator').forEach(indicator => {
+                    indicator.innerHTML = '';
+                });
+                
+                const currentHeader = document.querySelector(`th[data-sort="${sortColumn}"] .sort-indicator`);
+                if (currentHeader) {
+                    currentHeader.innerHTML = sortDirection === 'asc' ? '↑' : '↓';
+                }
             }
             
             // Định dạng tiền tệ
@@ -371,32 +838,70 @@
                 document.getElementById('itemPrice').value = item.price;
                 
                 editIndex = index;
-                addBtn.textContent = 'Cập Nhật';
+                addBtn.innerHTML = '<i class="fas fa-sync-alt"></i> Cập nhật';
                 document.getElementById('itemName').focus();
+                
+                // Cuộn đến form
+                document.querySelector('.form-container').scrollIntoView({ 
+                    behavior: 'smooth', 
+                    block: 'nearest'
+                });
             }
             
             // Xóa món hàng
             function deleteItem(index) {
                 if (confirm('Bạn có chắc muốn xóa món hàng này?')) {
-                    items.splice(index, 1);
-                    saveItems();
-                    renderItems();
-                    updateTotal();
-                    
-                    if (editIndex === index) {
-                        editIndex = null;
-                        addBtn.textContent = 'Thêm Món';
-                        clearForm();
-                    } else if (editIndex > index) {
-                        editIndex--;
+                    // Hiệu ứng xóa
+                    const itemRow = document.querySelector(`.item-row:nth-child(${index + 1})`);
+                    if (itemRow) {
+                        itemRow.style.opacity = '0';
+                        itemRow.style.transform = 'translateX(-50px)';
+                        setTimeout(() => {
+                            items.splice(index, 1);
+                            saveItems();
+                            renderItems();
+                            updateTotal();
+                            
+                            if (editIndex === index) {
+                                editIndex = null;
+                                addBtn.innerHTML = '<i class="fas fa-plus"></i> Thêm món hàng';
+                                clearForm();
+                            } else if (editIndex > index) {
+                                editIndex--;
+                            }
+                        }, 300);
+                    } else {
+                        items.splice(index, 1);
+                        saveItems();
+                        renderItems();
+                        updateTotal();
                     }
                 }
             }
             
+            // Chuyển đổi trạng thái mua hàng
+            function togglePurchaseStatus(index) {
+                items[index].purchased = !items[index].purchased;
+                saveItems();
+                renderItems();
+                updateTotal();
+            }
+            
             // Cập nhật tổng tiền
             function updateTotal() {
-                const total = items.reduce((sum, item) => sum + item.price, 0);
+                const activeItems = items.filter(item => !item.purchased);
+                const total = activeItems.reduce((sum, item) => sum + (item.quantity * item.price), 0);
+                
                 totalAmount.textContent = formatCurrency(total);
+                itemCount.textContent = items.length;
+                
+                // Cập nhật số lượng món hàng chưa mua
+                const activeCount = items.filter(item => !item.purchased).length;
+                const countElement = document.getElementById('itemCount');
+                if (countElement) {
+                    countElement.textContent = items.length;
+                    countElement.innerHTML = `${items.length} món hàng <span style="font-size: 0.9em; color: ${activeCount === 0 ? 'var(--secondary)' : 'var(--danger)'}">(${activeCount} chưa mua)</span>`;
+                }
             }
             
             // Xóa form nhập liệu
@@ -411,6 +916,17 @@
             function saveItems() {
                 localStorage.setItem('shoppingList', JSON.stringify(items));
             }
+            
+            // Kiểm tra chế độ tối từ localStorage
+            if (localStorage.getItem('theme') === 'dark') {
+                document.body.classList.add('dark-mode');
+                const icon = themeToggle.querySelector('i');
+                icon.classList.remove('fa-moon');
+                icon.classList.add('fa-sun');
+            }
+            
+            // Khởi tạo
+            updateSortIndicators();
         });
     </script>
 </body>
